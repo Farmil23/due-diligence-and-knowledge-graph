@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FinAgent — Pitch Deck (5 Slide)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    :root {
+      --bg0: #0a0f1c;
+      --bg1: #121a2e;
+      --accent: #3b82f6;
+      --accent2: #6366f1;
+      --text: #e8edf7;
+      --muted: #94a3b8;
+      --card: rgba(255,255,255,0.06);
+      --border: rgba(255,255,255,0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: "DM Sans", system-ui, sans-serif;
+      background: var(--bg0);
+      color: var(--text);
+    }
+
+    .deck {
+      height: 100vh;
+      width: 100%;
+      position: relative;
+      background:
+        radial-gradient(ellipse 120% 80% at 80% -20%, rgba(59,130,246,0.25), transparent),
+        radial-gradient(ellipse 80% 60% at -10% 100%, rgba(99,102,241,0.2), transparent),
+        linear-gradient(165deg, var(--bg0), var(--bg1));
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: clamp(2rem, 5vw, 4rem);
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      animation: in 0.45s ease-out;
+    }
+
+    .slide.active { display: flex; }
+
+    @keyframes in {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+      background: var(--card);
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    h2 {
+      font-size: clamp(1.35rem, 3vw, 2rem);
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+
+    .subtitle {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--muted);
+      max-width: 42rem;
+      line-height: 1.55;
+    }
+
+    ul.points {
+      margin-top: 1.5rem;
+      list-style: none;
+      display: grid;
+      gap: 0.75rem;
+      max-width: 48rem;
+    }
+
+    ul.points li {
+      padding-left: 1.25rem;
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    ul.points li strong { color: #fff; }
+
+    .visual {
+      margin-top: 2rem;
+      padding: 1.25rem 1.5rem;
+      border-radius: 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      overflow-x: auto;
+    }
+
+    .visual svg { display: block; max-width: 100%; height: auto; }
+
+    .mono {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      white-space: pre-wrap;
+      line-height: 1.5;
+    }
+
+    .nav-hint {
+      position: fixed;
+      bottom: 1.25rem;
+      right: 1.5rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+      z-index: 10;
+    }
+
+    .dots {
+      position: fixed;
+      bottom: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 0.5rem;
+      z-index: 10;
+    }
+
+    .dots button {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.25);
+      cursor: pointer;
+    }
+
+    .dots button.active { background: var(--accent); transform: scale(1.15); }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .pill {
+      padding: 0.6rem 1rem;
+      border-radius: 10px;
+      background: rgba(59,130,246,0.15);
+      border: 1px solid rgba(59,130,246,0.35);
+      font-size: 0.9rem;
+      color: #bfdbfe;
+    }
+
+    @media print {
+      .nav-hint, .dots { display: none !important; }
+      .slide { display: flex !important; position: relative; page-break-after: always; height: auto; min-height: 100vh; }
+      html, body { overflow: visible; height: auto; }
+      .deck { height: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck">
+
+    <!-- SLIDE 1 -->
+    <section class="slide active" data-i="0">
+      <span class="badge">Hackathon • B2B KYC</span>
+      <h1>FinAgent</h1>
+      <p class="subtitle">
+        Agen AI untuk <strong>KYC &amp; Due Diligence</strong>: dokumen perusahaan diubah menjadi
+        <strong>knowledge graph</strong>, lalu diinterogasi dengan bahasa alami — dengan
+        <strong>paywall pembayaran nyata (DOKU)</strong> yang menjadi bagian dari alur agen (LangGraph).
+      </p>
+      <div class="visual" aria-hidden="true">
+        <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#3b82f6"/>
+              <stop offset="100%" style="stop-color:#6366f1"/>
+            </linearGradient>
+          </defs>
+          <rect x="20" y="70" rx="12" width="140" height="56" fill="#1e293b" stroke="#475569"/>
+          <text x="90" y="102" fill="#94a3b8" font-size="13" text-anchor="middle" font-family="sans-serif">PDF / Dokumen</text>
+          <path d="M170 98 H230" stroke="url(#g1)" stroke-width="3" marker-end="url(#arr)"/>
+          <rect x="240" y="70" rx="12" width="120" height="56" fill="#1e3a5f" stroke="#3b82f6"/>
+          <text x="300" y="102" fill="#bfdbfe" font-size="13" text-anchor="middle" font-family="sans-serif">LLM Extract</text>
+          <path d="M370 98 H430" stroke="url(#g1)" stroke-width="3"/>
+          <rect x="440" y="70" rx="12" width="120" height="56" fill="#1e293b" stroke="#6366f1"/>
+          <text x="500" y="102" fill="#c7d2fe" font-size="13" text-anchor="middle" font-family="sans-serif">Neo4j Graph</text>
+          <path d="M570 98 H630" stroke="url(#g1)" stroke-width="3"/>
+          <rect x="640" y="62" rx="12" width="70" height="72" fill="#312e81" stroke="#818cf8"/>
+          <text x="675" y="105" fill="#e0e7ff" font-size="12" text-anchor="middle" font-family="sans-serif">User</text>
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+              <polygon points="0 0, 8 4, 0 8" fill="#3b82f6"/>
+            </marker>
+          </defs>
+        </svg>
+      </div>
+      <div class="cta-row">
+        <span class="pill">LangGraph • GPT-4o • Neo4j Aura</span>
+        <span class="pill">DOKU Payment Gateway</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 2 -->
+    <section class="slide" data-i="1">
+      <span class="badge">Masalah</span>
+      <h2>Mengapa ini penting?</h2>
+      <p class="subtitle">
+        Due diligence tradisional bergantung pada membaca manual dan spreadsheet.
+        Hubungan pemilik manfaat, direksi, dan afiliasi sulit dilacak secara konsisten dari banyak dokumen.
+      </p>
+      <ul class="points">
+        <li><strong>Fragmentasi data:</strong> fakta tersebar di akta, laporan, dan lampiran PDF.</li>
+        <li><strong>Risiko terlewat:</strong> pola kepemilikan silang atau entitas sekutu tidak terlihat tanpa model relasi.</li>
+        <li><strong>Skalabilitas:</strong> tiap kasus baru memakan waktu analis senior.</li>
+        <li><strong>Nilai bisnis:</strong> analisis mendalam layak dibayar — tetapi harus terintegrasi ke sistem, bukan sekadar tombol manual.</li>
+      </ul>
+    </section>
+
+    <!-- SLIDE 3 -->
+    <section class="slide" data-i="2">
+      <span class="badge">Solusi</span>
+      <h2>FinAgent dalam satu kalimat</h2>
+      <p class="subtitle">
+        Mengubah dokumen menjadi graf yang bisa ditanya seperti analis senior — dengan agen yang memutuskan langkah,
+        memanggil Neo4j, dan mengunci investigasi premium di belakang pembayaran DOKU yang sah secara teknis.
+      </p>
+      <div class="visual">
+        <svg viewBox="0 0 760 260" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="100" width="130" height="50" rx="8" fill="#0f172a" stroke="#64748b"/>
+          <text x="75" y="130" fill="#cbd5e1" font-size="12" text-anchor="middle">Browser UI</text>
+          <path d="M145 125 H185" stroke="#3b82f6" stroke-width="2"/>
+          <rect x="190" y="85" width="150" height="80" rx="10" fill="#1e293b" stroke="#3b82f6"/>
+          <text x="265" y="118" fill="#fff" font-size="13" text-anchor="middle" font-weight="bold">FastAPI</text>
+          <text x="265" y="138" fill="#94a3b8" font-size="11" text-anchor="middle">REST + Jinja2</text>
+          <path d="M345 125 H395" stroke="#6366f1" stroke-width="2"/>
+          <rect x="400" y="70" width="170" height="110" rx="10" fill="#172554" stroke="#818cf8"/>
+          <text x="485" y="98" fill="#e0e7ff" font-size="13" text-anchor="middle" font-weight="bold">LangGraph</text>
+          <text x="485" y="118" fill="#a5b4fc" font-size="10" text-anchor="middle">gatekeeper → plan →</text>
+          <text x="485" y="132" fill="#a5b4fc" font-size="10" text-anchor="middle">cypher → Neo4j → answer</text>
+          <path d="M575 125 H615" stroke="#22c55e" stroke-width="2"/>
+          <rect x="620" y="95" width="130" height="60" rx="8" fill="#052e16" stroke="#22c55e"/>
+          <text x="685" y="130" fill="#bbf7d0" font-size="12" text-anchor="middle">Neo4j AuraDB</text>
+          <rect x="400" y="200" width="110" height="40" rx="6" fill="#450a0a" stroke="#f87171"/>
+          <text x="455" y="225" fill="#fecaca" font-size="11" text-anchor="middle">DOKU API</text>
+          <path d="M455 185 V195" stroke="#f87171" stroke-dasharray="4"/>
+          <path d="M485 185 V185 Q485 165 455 165" stroke="#f87171" fill="none"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- SLIDE 4 -->
+    <section class="slide" data-i="3">
+      <span class="badge">Differentiator</span>
+      <h2>Paywall di dalam workflow agen</h2>
+      <p class="subtitle">
+        Bukan sekadar popup frontend: node <strong>payment_gatekeeper</strong> di LangGraph menghentikan alur sampai status bayar terverifikasi
+        lewat webhook server-to-server DOKU — cocok untuk kriteria hackathon (reasoning + tools + payment).
+      </p>
+      <div class="visual mono">
+User bertanya (investigasi dalam)
+        │
+        ▼
+┌─────────────────────┐
+│ payment_gatekeeper  │──── tidak bayar ───► kirim link DOKU + invoice
+└─────────┬───────────┘
+          │ bayar OK (webhook)
+          ▼
+   planning → write_query → run_query(Neo4j) → answer_user
+      </div>
+      <ul class="points">
+        <li><strong>notification_url</strong> mengarah ke endpoint publik aplikasi (deploy / tunnel).</li>
+        <li>Sesi persisten (file / storage) agar webhook tetap konsisten setelah restart.</li>
+      </ul>
+    </section>
+
+    <!-- SLIDE 5 -->
+    <section class="slide" data-i="4">
+      <span class="badge">Roadmap</span>
+      <h2>Status &amp; langkah berikutnya</h2>
+      <ul class="points">
+        <li><strong>Sudah ada:</strong> ekstraksi entitas &amp; relasi, resolusi entitas (fuzzy), visualisasi graf (vis.js), trace node di chat, ekspor laporan HTML.</li>
+        <li><strong>Deploy:</strong> Hugging Face Spaces (Docker), dengan secrets Neo4j / LLM / DOKU / APP_BASE_URL.</li>
+        <li><strong>Next:</strong> RBAC multi-penyewa, audit trail formal, pemeringkatan risiko skor, dan konektor dokumen tambahan.</li>
+      </ul>
+      <p class="subtitle" style="margin-top:2rem;">
+        Terima kasih — demo langsung di Space HF atau lingkungan lokal dengan Neo4j Aura aktif dan nama database (<code style="color:#93c5fd">NEO4J_DATABASE</code>) yang sesuai console.
+      </p>
+    </section>
+
+  </div>
+
+  <p class="nav-hint">← → atau ↑ ↓ untuk slide • <kbd style="background:#1e293b;padding:2px 6px;border-radius:4px">F</kbd> fullscreen browser</p>
+  <div class="dots" id="dots"></div>
+
+  <script>
+    const slides = [...document.querySelectorAll(".slide")];
+    let idx = 0;
+
+    const dots = document.getElementById("dots");
+    slides.forEach((_, i) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.setAttribute("aria-label", "Slide " + (i + 1));
+      b.addEventListener("click", () => go(i));
+      dots.appendChild(b);
+    });
+
+    function paint() {
+      slides.forEach((s, i) => s.classList.toggle("active", i === idx));
+      [...dots.children].forEach((d, i) => d.classList.toggle("active", i === idx));
+      history.replaceState(null, "", "#" + (idx + 1));
+    }
+
+    function go(i) {
+      idx = (i + slides.length) % slides.length;
+      paint();
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === " ") {
+        e.preventDefault();
+        go(idx + 1);
+      }
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        e.preventDefault();
+        go(idx - 1);
+      }
+      if (e.key === "f" || e.key === "F") {
+        document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+      }
+    });
+
+    const h = parseInt(location.hash.slice(1), 10);
+    if (h >= 1 && h <= slides.length) idx = h - 1;
+    paint();
+  </script>
+</body>
+</html>
