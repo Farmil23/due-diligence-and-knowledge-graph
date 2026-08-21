@@ -1,0 +1,25 @@
+
+# ── AI & Orchestration ────────────────────────────────────────────────────
+langgraph
+langchain-openai
+langchain-groq
+langchain-community
+langchain-core
+langchain_neo4j
+pydantic
+pydantic-settings
+
+# ── Database ─────────────────────────────────────────────────────────────
+neo4j
+pymupdf
+
+# ── Utilities ────────────────────────────────────────────────────────────
+python-dotenv
+rapidfuzz
+jellyfish
+requests
+
+# ── API / Web ────────────────────────────────────────────────────────────
+fastapi
+uvicorn
+python-multipart
