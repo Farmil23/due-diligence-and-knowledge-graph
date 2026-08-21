@@ -1,31 +1,27 @@
 ---
-title: FinAgent B2B KYC Due Diligence
+title: Autonomous Due Diligence & Knowledge Graph
 emoji: 🕵️
 colorFrom: blue
 colorTo: indigo
 sdk: docker
 pinned: true
-app_port: 7860
 ---
 
 <div align="center">
 
-<img src="app/static/img/logo.png" alt="FinAgent Logo" height="80"/>
+# FinAgent — Autonomous B2B Due Diligence AI
 
-# FinAgent — B2B KYC & Due Diligence AI
-
-### Premium Forensic Knowledge Graph Investigator with Payment Paywall
+### Forensic Knowledge Graph Investigator
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![LangGraph](https://img.shields.io/badge/LangGraph-Agentic_Workflow-FF6C37?style=for-the-badge&logo=langchain&logoColor=white)](https://langchain.com)
 [![Neo4j](https://img.shields.io/badge/Neo4j_AuraDB-008CC1?style=for-the-badge&logo=neo4j&logoColor=white)](https://neo4j.com)
 [![OpenAI](https://img.shields.io/badge/GPT--4o-412991?style=for-the-badge&logo=openai&logoColor=white)](https://openai.com)
-[![DOKU](https://img.shields.io/badge/DOKU-Payment_Gateway-E84142?style=for-the-badge)](https://doku.com)
 
 <p align="center">
-  <b>The first AI Agent that gates premium forensic analysis behind a real payment paywall.</b><br>
-  Upload a corporate document → ask anything → the agent decides your access tier → Neo4j graph extraction → structured KYC report.
+  <b>A powerful AI Agent for forensic corporate analysis.</b><br>
+  Upload a corporate document → LLM extracts entities & relationships → Neo4j stores the graph → ask anything via natural language.
 </p>
 
 </div>
@@ -34,9 +30,9 @@ app_port: 7860
 
 ## 📖 Overview
 
-**FinAgent** is an autonomous B2B KYC & Due Diligence AI Agent built on **LangGraph**. It transforms unstructured corporate documents into a forensic **Knowledge Graph** stored in **Neo4j AuraDB**, then lets analysts query it using natural language.
+**FinAgent** is an autonomous B2B Due Diligence AI Agent built on **LangGraph**. It transforms unstructured corporate documents into a forensic **Knowledge Graph** stored in **Neo4j AuraDB**, then lets analysts query it using natural language.
 
-What makes it unique: the agent itself enforces a **monetisation gate**. When it detects a complex investigation requiring deep graph traversal, it pauses the workflow, generates a **real DOKU payment link** (Rp 50,000), and only resumes full Neo4j extraction once payment is confirmed. This is not a frontend trick — the paywall is a **LangGraph node**.
+The core agent logic is cleanly encapsulated and exposed via a robust **FastAPI** backend, allowing for seamless programmatic document ingestion and deep investigative queries.
 
 ### Key Capabilities
 
@@ -46,9 +42,7 @@ What makes it unique: the agent itself enforces a **monetisation gate**. When it
 | **Relationship Mapping** | `OWNS_SHARE`, `DIRECTS`, `BORROWS_FROM`, `LENDS_TO`, `REGISTERED_AT`, `TRANSFERRED_TO` |
 | **Shell Company Detection** | Flags entities registered in tax-haven jurisdictions |
 | **Beneficial Ownership** | Multi-hop graph traversal reveals hidden controllers |
-| **Payment Paywall** | Real DOKU sandbox integration — agent pauses mid-workflow for payment |
-| **Export Report** | One-click HTML due-diligence report with FinAgent branding |
-| **Agent Trace** | Collapsible accordion showing every LangGraph node's output in chat |
+| **REST API** | Clean API endpoints for document upload (`/api/upload`) and querying (`/api/investigate`) |
 
 ---
 
@@ -56,23 +50,18 @@ What makes it unique: the agent itself enforces a **monetisation gate**. When it
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        User Browser                             │
-│   Dashboard (Graph viz) │ Investigasi (Chat) │ Dokumen          │
+│                           Client / UI                           │
+│                 Upload Documents | Ask Questions                │
 └──────────────┬──────────────────────────────────────────────────┘
-               │ HTTP (Jinja2 + REST)
+               │ HTTP REST
 ┌──────────────▼──────────────────────────────────────────────────┐
-│                   FastAPI Gateway (port 8000)                   │
-│  POST /api/investigate  │  GET /api/result/{id}                 │
-│  POST /webhooks/doku-paid  │  GET /api/graph                    │
+               │    FastAPI Gateway (api.py / port 8000)          │
+               │  POST /api/upload  │  POST /api/investigate      │
 └──────────────┬──────────────────────────────────────────────────┘
-               │ invoke()
+               │ 
 ┌──────────────▼──────────────────────────────────────────────────┐
-│              LangGraph Agentic Workflow                         │
+│              LangGraph Agentic Workflow (main.py)               │
 │                                                                 │
-│  ┌─────────────────────┐                                        │
-│  │  payment_gatekeeper │──[BLOCKED]──► END (return DOKU link)  │
-│  └──────────┬──────────┘                                        │
-│             │ [PROCEED] (basic free OR deep+PAID)               │
 │  ┌──────────▼──────────┐                                        │
 │  │      planning       │  LLM decomposes the question           │
 │  └──────────┬──────────┘                                        │
@@ -89,47 +78,10 @@ What makes it unique: the agent itself enforces a **monetisation gate**. When it
 └─────────────────────────────────────────────────────────────────┘
                │ read/write
 ┌──────────────▼──────────────────────────────────────────────────┐
-│               Neo4j AuraDB (Cloud Knowledge Graph)             │
+│               Neo4j AuraDB (Cloud Knowledge Graph)              │
 │  Nodes: Company │ Person │ Address │ Document                   │
-│  Edges: OWNS_SHARE │ DIRECTS │ BORROWS_FROM │ REGISTERED_AT    │
+│  Edges: OWNS_SHARE │ DIRECTS │ BORROWS_FROM │ REGISTERED_AT     │
 └─────────────────────────────────────────────────────────────────┘
-```
-
----
-
-## 💳 Payment Paywall Flow
-
-```
-User asks deep investigation question
-         │
-         ▼
- LangGraph: payment_gatekeeper node
-         │
-   depth == "deep"?
-   payment_status == "UNPAID"?
-         │ YES
-         ▼
- DOKU API → create_payment_link()
- Returns: checkout URL + invoice_number
-         │
-         ▼
- Frontend shows paywall modal
- User pays via DOKU (VA BCA, etc.)
-         │
-         ▼
- DOKU → POST /webhooks/doku-paid  ← server-side notification
- OR user clicks "GO TO MERCHANT"  ← browser redirect to /payment-success
-         │
-         ▼
- Session: payment_status = "PAID"
- BackgroundTask: _resume_investigation()
-         │
-         ▼
- LangGraph re-invoked with PAID state
- → planning → write_query → run_query → answer_user
-         │
-         ▼
- Chat shows: Agent Trace accordion + full KYC report + Export button
 ```
 
 ---
@@ -137,50 +89,27 @@ User asks deep investigation question
 ## 🗂️ Project Structure
 
 ```
-__FINAGENT/
+due-diligence-and-knowledge-graph/
+├── api.py                      # FastAPI REST server entry point
+├── main.py                     # CLI and LangGraph workflow entry point
+├── text_extraction.py          # Direct text extraction utility script
 ├── app/
-│   ├── api/v1/
-│   │   └── endpoints.py        # FastAPI routes, session store, webhooks
 │   ├── core/
 │   │   ├── config.py           # Settings from env vars
-│   │   └── logging.py          # UTF-8 compatible logger
-│   ├── services/
-│   │   ├── workflow.py         # LangGraph graph + KYCAgentState
-│   │   ├── graph_extractor.py  # PDF → LLM → Neo4j entity extraction
-│   │   ├── graph_retriever.py  # Natural language → Cypher → answer
-│   │   ├── doku_service.py     # DOKU Checkout v1 API integration
-│   │   └── llm_service.py      # OpenAI / Groq LLM client
-│   ├── static/
-│   │   ├── css/style.css       # Dark-theme UI
-│   │   ├── js/app.js           # vis.js graph, payment flow, trace accordion
-│   │   └── img/logo.png        # FinAgent logo
-│   ├── templates/
-│   │   └── index.html          # Jinja2 multi-view SPA
-│   └── main.py                 # Uvicorn entry point
-├── uploads/                    # Uploaded PDF/TXT files
-├── sessions.json               # Persisted session state (auto-generated)
-├── Dockerfile                  # Production container
-├── railway.toml                # Railway deployment config
-├── docker-compose.yml          # Local dev stack
+│   │   └── logging.py          # Logger configuration
+│   ├── db/
+│   │   └── neo4j_client.py     # Neo4j database driver connection
+│   └── services/
+│       ├── workflow.py         # LangGraph graph definition
+│       ├── graph_extractor.py  # PDF → LLM → Neo4j entity extraction
+│       ├── graph_retriever.py  # Natural language → Cypher translation
+│       └── llm_service.py      # OpenAI / Groq LLM client
+├── testing/
+│   ├── dummy_report.txt        # Sample report for testing extraction
+│   └── test_upload_doc.py      # Script to test the upload pipeline
 ├── requirements.txt
 └── .env.example                # Environment variable template
 ```
-
----
-
-## ⚙️ Tech Stack
-
-| Layer | Technology | Purpose |
-|---|---|---|
-| **AI Orchestration** | LangGraph | Stateful agentic workflow with conditional edges |
-| **LLM** | GPT-4o (OpenAI) | Entity extraction, Cypher generation, report synthesis |
-| **LLM Fallback** | Llama-3.3-70B (Groq) | Free fallback when OpenAI unavailable |
-| **Knowledge Graph** | Neo4j AuraDB | Cloud graph database for entity relationships |
-| **Payment Gateway** | DOKU Checkout v1 | Real sandbox payment with HMAC-SHA256 signature |
-| **API Framework** | FastAPI + Jinja2 | REST API + server-rendered frontend |
-| **Graph Viz** | vis.js Network | Interactive entity-relationship visualisation |
-| **Entity Resolution** | rapidfuzz + jellyfish | Fuzzy deduplication (ICIJ-inspired techniques) |
-| **PDF Parsing** | PyMuPDF | Text extraction from corporate documents |
 
 ---
 
@@ -188,26 +117,28 @@ __FINAGENT/
 
 ### 1. Prerequisites
 - Python 3.10+
+- Conda (optional but recommended)
 - Neo4j AuraDB account (free tier)
-- DOKU sandbox account
 - OpenAI API key
 
 ### 2. Install
 ```bash
-git clone https://github.com/your-username/finagent.git
-cd finagent
-python -m venv venv
-venv\Scripts\activate          # Windows
+git clone https://github.com/Farmil23/due-diligence-and-knowledge-graph.git
+cd due-diligence-and-knowledge-graph
+
+# Using Conda
+conda create -y -n auto_graph python=3.11
+conda activate auto_graph
 pip install -r requirements.txt
 ```
 
 ### 3. Configure
 ```bash
 cp .env.example .env
-# Edit .env with your actual keys
+# Edit .env with your actual keys (Neo4j and OpenAI)
 ```
 
-### 4. Run
+### 4. Run API Server
 ```bash
 conda activate auto_graph
 python api.py
@@ -215,21 +146,15 @@ python api.py
 
 Open `http://localhost:8000/docs` to access the interactive Swagger UI API documentation.
 
----
-
-## 🌐 Deploy to Railway
-
+### 5. Alternative: Run via CLI
+You can bypass the API and run the agent directly in the terminal:
 ```bash
-# 1. Push to GitHub
-git add . && git commit -m "deploy" && git push
-
-# 2. Go to railway.app → New Project → Deploy from GitHub
-# 3. Set all env vars from .env.example in Railway Variables tab
-# 4. After first deploy, get your URL (e.g. https://finagent-xxxx.up.railway.app)
-# 5. Set APP_BASE_URL=https://finagent-xxxx.up.railway.app → Redeploy
+python main.py
 ```
-
-The `railway.toml` is pre-configured. Railway auto-detects the Dockerfile.
+Or test the document extraction script directly:
+```bash
+python testing/test_upload_doc.py
+```
 
 ---
 
@@ -237,17 +162,12 @@ The `railway.toml` is pre-configured. Railway auto-detects the Dockerfile.
 
 | Variable | Description |
 |---|---|
-| `DOKU_CLIENT_ID` | DOKU app Client ID |
-| `DOKU_SECRET_KEY` | DOKU secret key for HMAC signing |
-| `DOKU_BASE_URL` | `https://api-sandbox.doku.com` (sandbox) or `https://api.doku.com` (prod) |
 | `NEO4J_URI` | AuraDB connection URI (`neo4j+s://...`) |
 | `NEO4J_USERNAME` | AuraDB username |
 | `NEO4J_PASSWORD` | AuraDB password |
 | `NEO4J_DATABASE` | AuraDB database name |
 | `OPENAI_API_KEY` | OpenAI API key (GPT-4o) |
 | `GROQ_API_KEY` | Groq API key (fallback LLM) |
-| `APP_BASE_URL` | Public URL of deployed app (for DOKU callbacks) |
-| `APP_PORT` | Server port (default `8000`) |
 
 ---
 
@@ -268,15 +188,6 @@ The `railway.toml` is pre-configured. Railway auto-detects the Dockerfile.
 
 ---
 
-## 🎯 Built For
-
-**DOKU × AI Hackathon 2026** — demonstrating that AI Agents can embed real payment logic as a first-class reasoning node, not just a UI overlay.
-
-> *"Payment is not a feature bolted on — it's a conditional edge in the LangGraph workflow."*
-
----
-
 <div align="center">
 Made with ❤️ by <strong>Farhan Kamil Hermansyah</strong>
 </div>
-"# FINGENT_AUTONOMOUS_AI_B2B_KYC_-_DUE_DILIGENCE" 
